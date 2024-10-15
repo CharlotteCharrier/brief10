@@ -35,3 +35,41 @@ jobs:
      - uses: actions/upload-artifact@v4
        with:
         path: build/libs
+        
+  test:
+     name: Spring test
+     runs-on: ubuntu-latest
+     continue-on-error: true
+
+     services: 
+       postgres:
+         image: postgres
+         env:
+           POSTGRES_DB: postgres
+           POSTGRES_USER: postgres
+           POSTGRES_PASSWORD: postgres
+         options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+          
+     steps:
+       - name: Print version
+         # pipe pour mettre plusieurs echo dans le run
+         run: |
+           echo "${{ needs.get-version.outputs.version }}"
+           echo "${{ needs.get-version.outputs.changelogs }}"
+           echo "${{ needs.get-version.outputs.is-prerelease }}"
+           echo "${{ needs.get-version.outputs.will-release }}"
+       - name: Setup java
+         uses: actions/setup-java@v4
+         with:
+           distribution: 'temurin'
+           java-version: 17
+       - name: Setup gradle
+         uses: gradle/actions/setup-gradle@v4
+       - name: Checkout clone source code
+         uses: actions/checkout@v4
+       - name: Build with Gradle
+         run: ./gradlew test
