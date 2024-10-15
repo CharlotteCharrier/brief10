@@ -1,0 +1,20 @@
+on:
+  push:
+ 
+jobs:
+  build:
+   name: Spring build
+   runs-on: ubuntu-latest
+   steps:
+     - name: Setup java
+       uses: actions/setup-java@v4
+       with:
+         distribution: 'temurin'
+         java-version: 17
+     - name: Setup gradle
+       uses: gradle/actions/setup-gradle@v4
+     - name: Checkout clone source code
+       uses: actions/checkout@v4
+     - name: Build with Gradle
+       run: ./gradlew bootjar
+     - run: ls -lia build/libs
