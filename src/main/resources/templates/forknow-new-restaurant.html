@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New restaurant</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            display: grid;
+            height: 100vh;
+            align-items: end;
+            justify-items: center;
+            align-content: space-between;
+        }
+        header {
+            background-color: #FD9B3A;
+            padding: 20px 0;
+            width: 100vw;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #FFF;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+            background-color: #FD9B3A;
+            padding: 3rem;
+            border-radius: 50px 50px;
+        }
+        div{
+            display: flex;
+            flex-direction: column;
+        }
+        .container {
+            gap: 0.8rem;
+        }
+        #registerBtn {
+            padding: 0.4rem 0.8rem;
+            cursor: pointer;
+        }
+
+        footer {
+            background-color: #333;
+            color: #FFF;
+            text-align: center;
+            padding: 20px 0;
+            width: 100vw;
+        }
+        .button {
+            background-color: #333;
+            color: #FFF;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .button:hover {
+            background-color: #555;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+<div th:replace="header :: header"></div>
+<form th:action="@{/restaurants/save}" action="/restaurant/save" method="post" th:object="${restaurant}">
+    <div class="container">
+        <div>
+            <label for="name">Name of your shop</label>
+            <input type="text" name="name" id="name" placeholder="Name" th:field="*{name}">
+        </div>
+        <div>
+            <label for="food_style">Food style</label>
+            <input type="text" name="food_style" id="food_style" placeholder="Food style" th:field="*{food_style}">
+        </div>
+        <div>
+            <label for="image">Photo url</label>
+            <input type="text" name="image" id="image" placeholder="Photo url" th:field="*{image}">
+        </div>
+    </div>
+
+    <input type="submit" value="Add" id="registerBtn">
+</form>
+<div th:replace="footer :: footer"></div>
+
+</body>
+</html>

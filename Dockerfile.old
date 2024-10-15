@@ -1,0 +1,12 @@
+FROM openjdk:17-slim
+
+WORKDIR /app
+
+COPY . .
+
+RUN ls -lia && chmod +x ./gradlew \
+&& ./gradlew bootjar
+
+#LABEL authors="57532B"
+
+#ENTRYPOINT ["top", "-b"]
