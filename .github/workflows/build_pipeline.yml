@@ -123,4 +123,4 @@ jobs:
       #et pas sur le dernier commit (au cas où les tests du dernier commit ne passent pas par exemple, 
       #on veut pas que ça impacte notre commit parce que peut-être que nous ça passe!)
         run: |
-          gh release create --repo $REPO --ref $COMMIT $VERSION build/*
+          gh release create --repo $REPO --target $COMMIT $VERSION build/*
