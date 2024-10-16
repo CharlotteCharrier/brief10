@@ -2,36 +2,49 @@ on:
   push:
  
 jobs:
+
+#1er job:
   get-version:
+  # se base sur un projet de Flavien
     uses: shiipou/github-actions/.github/workflows/get-version.yml@main      
-      
+
+#2ème job: 
   build:
    name: Spring build
    runs-on: ubuntu-latest
+   #si get-version voit un commit qui permet une release (montée de version): fait le build, sinon fait pas le build
    if: ${{ needs.get-version.outputs.will-release == 'true' }}
+   #ici je définis needs:
    needs: 
+   #va chercher le resultat du 1er job
       - get-version
    steps:
+     #step 1
      - name: Print version
        run : |
          echo "${{ needs.get-version.outputs.version }}"
          echo "${{ needs.get-version.outputs.changelogs }}"
          echo "${{ needs.get-version.outputs.is-pre-release }}"
          echo "${{ needs.get-version.outputs.will-release }}"
+     #step 2
      - name: Setup java
        uses: actions/setup-java@v4
        with:
          distribution: 'temurin'
          java-version: 17
+     #step 3
      - name: Setup gradle
        uses: gradle/actions/setup-gradle@v4
+     #step 4
      - name: Checkout clone source code
        uses: actions/checkout@v4
+     #step 5
      - name: Build with Gradle
        env: 
          VERSION : "${{ needs.get-version.outputs.version }}"
        run: ./gradlew bootjar
       #- run: ls -lia build/libs
+     #step 6
      - uses: actions/upload-artifact@v4
        with:
         path: build/libs
@@ -39,6 +52,7 @@ jobs:
   test:
      name: Spring test
      runs-on: ubuntu-latest
+     #continue même si les tests sont pas bons (le temps que je puisse dev tranquille)
      continue-on-error: true
 
      services: 
@@ -53,7 +67,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-          
      steps:
        - name: Print version
          # pipe pour mettre plusieurs echo dans le run
