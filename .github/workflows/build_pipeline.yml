@@ -39,6 +39,7 @@ jobs:
      - name: Setup gradle
        uses: gradle/actions/setup-gradle@v4
      #step 4
+     #récupère le code du repo
      - name: Checkout clone source code
        uses: actions/checkout@v4
      #step 5
